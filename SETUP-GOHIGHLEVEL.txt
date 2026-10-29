@@ -1,0 +1,78 @@
+HOW TO CONNECT THE NEW QUIZ TO GOHIGHLEVEL
+==========================================
+
+When someone finishes the quiz on the new website, the site sends their
+answers to GoHighLevel. GoHighLevel needs a workflow that receives them and
+creates the contact. Setting it up takes about 10 minutes in your account.
+
+
+1. MAKE THE WORKFLOW
+   - In GoHighLevel go to Automation > Workflows.
+   - Click "+ Create Workflow" and choose "Start from Scratch".
+   - Click "Add New Trigger", search for "Inbound Webhook", and pick it.
+   - It shows a webhook URL. Copy it.
+
+   Note: Inbound Webhook is a "premium" trigger. Depending on your plan,
+   GoHighLevel may charge a small amount each time it runs.
+
+
+2. PUT THE URL INTO THE WEBSITE
+   - Open  prototype\index.html  in a text editor (Notepad works).
+   - Search for:   data-webhook-url=""
+   - Paste the URL between the quotes, like this:
+       data-webhook-url="https://services.leadconnectorhq.com/hooks/....."
+   - Save the file.
+
+
+3. SEND ONE TEST SIGN-UP
+   - Open the website, click "YES! I WANT TO JOIN FOR FREE", and finish the
+     quiz with your own email.
+   - Back in the workflow, open the trigger, click "Fetch Sample Requests",
+     pick the request that just arrived, and save the trigger.
+
+
+4. CREATE THE CONTACT
+   - Add the action "Create Contact" (or "Create/Update Contact").
+   - Using the sample request, map:
+       First Name  ->  first_name
+       Email       ->  email
+   - Optional: to see the quiz answers on the contact, create custom fields
+     (Settings > Custom Fields) and map goal, commitment, hardgainer, ready.
+   - Optional: add a tag such as "30-day-challenge".
+
+
+5. KEEP DOING WHAT THE OLD QUIZ DID
+   - Open the workflow the old quiz starts today (its trigger is probably
+     "Survey Submitted").
+   - Add the same steps (for example the email with the free invitation) to
+     the new workflow, after "Create Contact".
+
+
+6. TURN IT ON
+   - Switch the workflow from Draft to Publish and save.
+   - Do one more test sign-up and check that the contact shows up and the
+     invitation email arrives.
+
+
+WHAT THE WEBSITE SENDS FOR EACH SIGN-UP
+   first_name   e.g. "Sam"
+   email        e.g. "sam@example.com"
+   goal         "Get shredded", "Put on muscle mass" or "Both"
+   commitment   "Yes, absolutely" or "Not sure"
+   hardgainer   "Yes"
+   ready        "Yes"
+   source       "30-Day Challenge quiz"
+   page         the web address of the page
+
+People who answer "No" to the hardgainer question or the "ready to get
+started" question see a goodbye message and are never sent, because the quiz
+stops before it asks for their email.
+
+
+GOOD TO KNOW
+   - Until the URL is pasted in, the quiz still works but sends nothing.
+   - If GoHighLevel can't be reached, the person sees "Something went wrong.
+     Please try again." and their answers stay filled in.
+   - The webhook URL can be seen by anyone who looks at the page's code. The
+     quiz has a hidden spam trap that stops simple bots. If junk sign-ups
+     still show up, that's the time to add stronger spam protection.
